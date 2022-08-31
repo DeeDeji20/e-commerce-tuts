@@ -1,4 +1,4 @@
-package com.deedeji.ecommerce.models;
+package com.deedeji.ecommerce.data.models;
 
 import com.sun.istack.NotNull;
 
