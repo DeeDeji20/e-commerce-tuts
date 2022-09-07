@@ -4,11 +4,7 @@ import com.deedeji.ecommerce.data.models.Category;
 import com.deedeji.ecommerce.services.CategoryService;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,7 +26,13 @@ public class CategoryController {
         return categoryService.createCategory(category);
     }
 
-    @PostMapping("/list")
+    @GetMapping("/{id}")
+    public Category getCategory(@PathVariable("id") Long id){
+        return categoryService.getCategory(id);
+    }
+
+
+    @GetMapping("/list")
     public List<Category> listCategory(){
         return categoryService.listAll();
     }

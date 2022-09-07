@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface CategoryService {
     String createCategory(Category category);
+
+    Category getCategory(Long id);
     List<Category> listAll();
 }

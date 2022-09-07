@@ -20,6 +20,11 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    public Category getCategory(Long id) {
+        return categoryRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Category with such id does not exist"));
+    }
+
+    @Override
     public List<Category> listAll() {
         return categoryRepository.findAll();
     }
