@@ -1,9 +1,9 @@
 package com.deedeji.ecommerce.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Configuration
-//@EnableSwagger2WebMvc
 @EnableSwagger2
 //@EnableWebMvc
 @Component
@@ -38,7 +37,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
             .apiInfo(apiInfo());
         }
         	private ApiInfo apiInfo() {
-                Contact contact = new Contact("adeola-ecommerce", "", "deolaoladeji@gmail.com");
+                Contact contact = new Contact("adeola-ecommerce", "www.google.com", "deolaoladeji@gmail.com");
+
         		return new ApiInfoBuilder()
         			.title("Ecommerce API")
         			.description("Documentation of Ecommerce api")

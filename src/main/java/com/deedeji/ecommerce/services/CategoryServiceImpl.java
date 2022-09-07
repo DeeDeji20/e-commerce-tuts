@@ -5,6 +5,8 @@ import com.deedeji.ecommerce.data.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService{
 
@@ -15,5 +17,10 @@ public class CategoryServiceImpl implements CategoryService{
     public String createCategory(Category category) {
         categoryRepository.save(category);
         return "Category created successfully";
+    }
+
+    @Override
+    public List<Category> listAll() {
+        return categoryRepository.findAll();
     }
 }

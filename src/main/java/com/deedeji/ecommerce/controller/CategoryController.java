@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/category")
 @ApiResponses(value = {
@@ -26,5 +28,10 @@ public class CategoryController {
     @PostMapping("/create")
     public String createCategory(@RequestBody Category category){
         return categoryService.createCategory(category);
+    }
+
+    @PostMapping("/list")
+    public List<Category> listCategory(){
+        return categoryService.listAll();
     }
 }
