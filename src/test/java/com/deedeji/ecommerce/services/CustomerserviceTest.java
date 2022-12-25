@@ -3,7 +3,9 @@ package com.deedeji.ecommerce.services;
 import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
+import com.deedeji.ecommerce.data.models.Customer;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
+import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.deedeji.ecommerce.util.EcommerceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,5 +80,16 @@ class CustomerServiceTest {
     void getAllCustomers(){
         var allCustomers = customerService.getAllCustomers();
         assertThat(allCustomers).isNotNull();
+    }
+
+    @Test
+    void getCustomerById() throws UserNotFoundException {
+        var customer = customerService.findById(1L);
+        assertThat(customer.get().getFirstName()).isEqualTo(request.getFirstName());
+    }
+
+    @Test
+    void getCustomerByInvalidId_throwsException() throws UserNotFoundException {
+        assertThrows(UserNotFoundException.class, ()-> customerService.findById(10L));
     }
 }

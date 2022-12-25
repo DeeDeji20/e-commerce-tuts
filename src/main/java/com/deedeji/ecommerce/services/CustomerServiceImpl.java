@@ -72,6 +72,14 @@ public class CustomerServiceImpl implements CustomerService{
         return customerRepository.findAll();
     }
 
+    @Override
+    public Optional<Customer> findById(Long id) throws UserNotFoundException {
+        Customer customer = customerRepository.findById(id).orElseThrow(()->
+                new UserNotFoundException(String.format(
+                        "No customer with such Id %d ", id)));
+        return Optional.of(customer);
+    }
+
     private void applyAddressUpdate(Address foundAddress, UpdateCustomerDetails details) {
         foundAddress.setCity(details.getCity());
         foundAddress.setBuildingNumber(details.getBuildingNumber());

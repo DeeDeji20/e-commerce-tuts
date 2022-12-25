@@ -8,6 +8,7 @@ import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
 
@@ -16,4 +17,6 @@ public interface CustomerService {
     String updateCustomerProfile(UpdateCustomerDetails details) throws UserNotFoundException;
 
     List<Customer> getAllCustomers();
+
+    Optional<Customer> findById(Long id) throws UserNotFoundException;
 }
