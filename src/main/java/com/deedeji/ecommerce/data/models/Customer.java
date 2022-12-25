@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString
-public class Customer {
+public class Customer extends AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
