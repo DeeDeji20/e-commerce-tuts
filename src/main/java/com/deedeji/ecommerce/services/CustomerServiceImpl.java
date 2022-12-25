@@ -15,7 +15,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -53,8 +56,27 @@ public class CustomerServiceImpl implements CustomerService{
                         String.format("Customer with id %d, not found", details.getCustomerId())
                 ));
         mapper.map(details, customerToUpdate);
+        Set<Address> customerAddressList = customerToUpdate.getAddress();
+        Optional<Address> foundAddress = customerAddressList.stream().findFirst();
+        if (foundAddress.isPresent()){
+            applyAddressUpdate(foundAddress.get(), details);
+        }
+        customerToUpdate.getAddress().add(foundAddress.get());
+        customerToUpdate.setEnabled(true);
+        Customer updatedCustomer = customerRepository.save(customerToUpdate);
+        return String.format("%s details updated successfully", updatedCustomer.getFirstName());
+    }
 
-        return null;
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    private void applyAddressUpdate(Address foundAddress, UpdateCustomerDetails details) {
+        foundAddress.setCity(details.getCity());
+        foundAddress.setBuildingNumber(details.getBuildingNumber());
+        foundAddress.setStreet(details.getStreet());
+        foundAddress.setState(details.getState());
     }
 
     private CustomerRegisterResponse registrationCustomerBuilder(Customer savedCustomer) {

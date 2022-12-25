@@ -73,4 +73,10 @@ class CustomerServiceTest {
         assertThat(updateResponse).isNotNull();
         assertThat(updateResponse.contains("success")).isTrue();
     }
+
+    @Test
+    void getAllCustomers(){
+        var allCustomers = customerService.getAllCustomers();
+        assertThat(allCustomers).isNotNull();
+    }
 }
