@@ -1,12 +1,10 @@
 package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
+import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
-import com.deedeji.ecommerce.data.models.Address;
-import com.deedeji.ecommerce.data.models.Authority;
-import com.deedeji.ecommerce.data.models.Cart;
-import com.deedeji.ecommerce.data.models.Customer;
+import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
@@ -15,9 +13,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,6 +31,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
     VerificationTokenService verificationTokenService;
+
+    @Autowired
+    EmailNotificationService emailNotificationService;
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -45,8 +51,34 @@ public class CustomerServiceImpl implements CustomerService{
         Customer savedCustomer = customerRepository.save(customer);
         log.info("customer saved in db::{}", savedCustomer);
         var token = verificationTokenService.createToken(savedCustomer.getEmail());
+        VerificationToken verificationToken = verificationTokenService.createToken(savedCustomer.getEmail());
 
+        emailNotificationService.sendHtmlMail(buildEmailNotificationRequest(token, savedCustomer.getFirstName()));
         return registrationCustomerBuilder(savedCustomer);
+    }
+
+    private EmailNotificationRequest buildEmailNotificationRequest(VerificationToken verificationToken,
+                                                                   String customerName) {
+        var message = getEmailTemplate();
+        String mail = null;
+        if (message != null){
+            var verificationUrl = "";
+            mail = String.format(message, customerName, verificationUrl);
+            log.info("mailed url--> {}", verificationUrl);
+        }
+        return EmailNotificationRequest.builder()
+                .userEmail(verificationToken.getUserEmail())
+                .mailContent(mail)
+                .build();
+    }
+
+    private String getEmailTemplate() {
+        try(BufferedReader bufferedReader=
+                new BufferedReader(new FileReader("C:\\Users\\CROWN_STAFF.DESKTOP-R8GJQ3F\\IdeaProjects\\e-commerce\\src\\main\\resources\\welcome.txt"))){
+            return bufferedReader.lines().collect(Collectors.joining());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

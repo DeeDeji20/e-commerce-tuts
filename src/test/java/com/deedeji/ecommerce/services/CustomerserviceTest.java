@@ -89,7 +89,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getCustomerByInvalidId_throwsException() throws UserNotFoundException {
+    void getCustomerByInvalidId_throwsException() {
         assertThrows(UserNotFoundException.class, ()-> customerService.findById(10L));
     }
 }
