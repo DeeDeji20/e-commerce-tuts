@@ -51,12 +51,17 @@ public class ProductServiceTest {
     }
 
     @Test
-    void addProductTest(){
+    void addProductTest() throws IOException {
         var response = productService.addProduct(addProductRequest);
         assertThat(response).isNotNull();
         assertThat(response.getProductId()).isGreaterThan(0L);
         assertThat(response.getMessage()).isNotNull();
         assertThat(response.getCode()).isEqualTo(201);
+    }
+
+    @Test
+    void updateProductDetailsTest(){
+
     }
 
 }

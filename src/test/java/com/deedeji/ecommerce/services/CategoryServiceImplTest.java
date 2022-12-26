@@ -16,13 +16,13 @@ class CategoryServiceImplTest {
 
     private Category category;
     @BeforeEach
-    void setup(){
-        category = new Category();
-        category.setId(1L);
-        category.setCategoryName("First category");
-        category.setDescription("First description");
-        category.setImageUrl("img url");
-    }
+//    void setup(){
+//        category = new Category();
+//        category.setId(1L);
+//        category.setCategoryName("First category");
+//        category.setDescription("First description");
+//        category.setImageUrl("img url");
+//    }
 
     @Test
     void testThatCategoryCanBeAdded(){
