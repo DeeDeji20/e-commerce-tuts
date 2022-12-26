@@ -8,6 +8,7 @@ import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+//@AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
@@ -50,10 +52,10 @@ public class CustomerServiceImpl implements CustomerService{
         customer.getAuthorities().add(Authority.BUY);
         Customer savedCustomer = customerRepository.save(customer);
         log.info("customer saved in db::{}", savedCustomer);
-        var token = verificationTokenService.createToken(savedCustomer.getEmail());
-        VerificationToken verificationToken = verificationTokenService.createToken(savedCustomer.getEmail());
+        VerificationToken verificationToken = verificationTokenService
+                .createToken(savedCustomer.getEmail());
 
-        emailNotificationService.sendHtmlMail(buildEmailNotificationRequest(token, savedCustomer.getFirstName()));
+        var msg =emailNotificationService.sendGmail(buildEmailNotificationRequest(verificationToken, savedCustomer.getFirstName()));
         return registrationCustomerBuilder(savedCustomer);
     }
 
