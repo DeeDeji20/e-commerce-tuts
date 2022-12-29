@@ -22,4 +22,6 @@ public interface ProductService {
     Page<Product> getAllProducts(GetAllItemsRequest getItemsRequest);
 
     String deleteProduct(long id);
+
+    Product deactivateProduct(long id) throws ProductException;
 }

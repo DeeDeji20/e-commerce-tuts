@@ -24,4 +24,5 @@ public class Product {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Category> categories =new ArrayList<>();
     private String imageUrl;
+    private boolean isActive = true;
 }

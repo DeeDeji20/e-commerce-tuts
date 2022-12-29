@@ -118,6 +118,12 @@ public class ProductServiceTest {
         assertThat(productService.deleteProduct(3L)).isNotNull();
     }
 
+    @Test
+    void deactivateProductTest() throws ProductException {
+           Product deactivatedProduct = productService.deactivateProduct(1L);
+           assertThat(deactivatedProduct.isActive()).isFalse();
+    }
+
     private GetAllItemsRequest buildGetItemsRequest() {
         return GetAllItemsRequest
                 .builder()

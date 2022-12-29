@@ -10,7 +10,6 @@ import com.deedeji.ecommerce.data.models.Product;
 import com.deedeji.ecommerce.data.repository.ProductRepository;
 import com.deedeji.ecommerce.exception.ProductException;
 import com.deedeji.ecommerce.services.cloud.CloudService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -106,6 +105,13 @@ public class ProductServiceImpl implements ProductService{
     public String deleteProduct(long id) {
         productRepository.deleteById(id);
         return "Product deleted successfully";
+    }
+
+    @Override
+    public Product deactivateProduct(long id) throws ProductException {
+        Product foundProduct = productRepository.findById(id).orElseThrow(()-> new ProductException(String.format("Product not %d found", id)));
+        foundProduct.setActive(false);
+        return productRepository.save(foundProduct);
     }
 
     private AddProductResponse buildAddProductResponse(Product product) {
