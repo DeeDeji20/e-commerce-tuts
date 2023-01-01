@@ -1,7 +1,6 @@
 package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.CartRequest;
-import com.deedeji.ecommerce.data.dto.request.GetAllItemsRequest;
 import com.deedeji.ecommerce.data.dto.response.CartResponse;
 import com.deedeji.ecommerce.data.models.Cart;
 import com.deedeji.ecommerce.data.models.Item;
@@ -25,6 +24,9 @@ public class CartServiceImpl implements CartService{
 
     @Autowired
     ProductService productService;
+
+    private final int PAGE_LIMIT = 10;
+
     @Override
     public Cart save(Cart cart) {
         return cartRepository.save(cart);
@@ -52,10 +54,9 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public Page<Cart> getCartList(GetAllItemsRequest getItemsRequest) {
+    public Page<Cart> getCartList(int pageNumber) {
         Pageable pageSpec = PageRequest
-                .of(getItemsRequest.getPageNumber() -1,
-                        getItemsRequest.getNumberOfItemsPerPage());
+                .of(pageNumber -1, PAGE_LIMIT);
         return cartRepository.findAll(pageSpec);
     }
 

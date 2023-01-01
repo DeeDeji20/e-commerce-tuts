@@ -1,7 +1,6 @@
 package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.AddProductRequest;
-import com.deedeji.ecommerce.data.dto.request.GetAllItemsRequest;
 import com.deedeji.ecommerce.data.dto.response.AddProductResponse;
 import com.deedeji.ecommerce.data.dto.response.UpdateProductResponse;
 import com.deedeji.ecommerce.data.models.Product;
@@ -19,7 +18,7 @@ public interface ProductService {
 
     Product getProductById(long id) throws ProductException;
 
-    Page<Product> getAllProducts(GetAllItemsRequest getItemsRequest);
+    Page<Product> getAllProducts(int pageNumber);
 
     String deleteProduct(long id);
 

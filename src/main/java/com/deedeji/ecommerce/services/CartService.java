@@ -1,7 +1,6 @@
 package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.CartRequest;
-import com.deedeji.ecommerce.data.dto.request.GetAllItemsRequest;
 import com.deedeji.ecommerce.data.dto.response.CartResponse;
 import com.deedeji.ecommerce.data.models.Cart;
 import com.deedeji.ecommerce.exception.CartNotFoundException;
@@ -15,5 +14,5 @@ public interface CartService {
 
     CartResponse addProductToCart(CartRequest cartRequest) throws ProductException, CartNotFoundException;
 
-    Page<Cart> getCartList(GetAllItemsRequest getItemsRequest);
+    Page<Cart> getCartList(int pageNumber);
 }

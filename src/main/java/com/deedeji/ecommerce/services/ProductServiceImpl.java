@@ -2,7 +2,6 @@ package com.deedeji.ecommerce.services;
 
 import com.cloudinary.utils.ObjectUtils;
 import com.deedeji.ecommerce.data.dto.request.AddProductRequest;
-import com.deedeji.ecommerce.data.dto.request.GetAllItemsRequest;
 import com.deedeji.ecommerce.data.dto.response.AddProductResponse;
 import com.deedeji.ecommerce.data.dto.response.UpdateProductResponse;
 import com.deedeji.ecommerce.data.models.Category;
@@ -37,6 +36,8 @@ public class ProductServiceImpl implements ProductService{
     private final CloudService cloudService;
 
     private final ProductRepository productRepository;
+
+    private final int PAGE_LIMIT=10;
     @Override
     public AddProductResponse addProduct(AddProductRequest addProductRequest) throws IOException {
         Product product = mapper.map(addProductRequest, Product.class);
@@ -94,10 +95,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Page<Product> getAllProducts(GetAllItemsRequest getItemsRequest) {
+    public Page<Product> getAllProducts(int pageNumber) {
         Pageable pageSpecs = PageRequest
-                .of(getItemsRequest.getPageNumber() -1,
-                        getItemsRequest.getNumberOfItemsPerPage());
+                .of(pageNumber -1, PAGE_LIMIT);
         return productRepository.findAll(pageSpecs);
     }
 

@@ -1,7 +1,6 @@
 package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.AddProductRequest;
-import com.deedeji.ecommerce.data.dto.request.GetAllItemsRequest;
 import com.deedeji.ecommerce.data.dto.response.AddProductResponse;
 import com.deedeji.ecommerce.data.dto.response.UpdateProductResponse;
 import com.deedeji.ecommerce.data.models.Product;
@@ -106,8 +105,7 @@ public class ProductServiceTest {
 
     @Test
     void getAllProductsTest(){
-        var getItemsRequest = buildGetItemsRequest();
-        Page<Product> productPage = productService.getAllProducts(getItemsRequest);
+        Page<Product> productPage = productService.getAllProducts(1);
         log.info("Page content:::: {}", productPage);
         assertThat(productPage).isNotNull();
         assertThat(productPage.getTotalElements()).isGreaterThan(0);
@@ -122,14 +120,6 @@ public class ProductServiceTest {
     void deactivateProductTest() throws ProductException {
            Product deactivatedProduct = productService.deactivateProduct(1L);
            assertThat(deactivatedProduct.isActive()).isFalse();
-    }
-
-    private GetAllItemsRequest buildGetItemsRequest() {
-        return GetAllItemsRequest
-                .builder()
-                .numberOfItemsPerPage(8)
-                .pageNumber(1)
-                .build();
     }
 
 }
