@@ -8,6 +8,7 @@ import com.deedeji.ecommerce.data.models.Customer;
 import com.deedeji.ecommerce.data.models.Vendor;
 import com.deedeji.ecommerce.data.repository.AdminRepository;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
+import com.deedeji.ecommerce.data.repository.VendorRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class UserServiceImpl implements UserService{
     private final CustomerRepository customerRepository;
 
     private final AdminRepository adminRepository;
+
+    private final VendorRepository vendorRepository;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -37,9 +40,18 @@ public class UserServiceImpl implements UserService{
                     .code(200)
                     .build();
         }
-        Optional<Vendor>
-        if()
-        return null;
+        Optional<Vendor> vendor = vendorRepository.findByEmail(loginRequest.getEmail());
+        if(vendor.isPresent() && vendor.get()
+                .getPassword().equals(loginRequest.getPassword())){
+            return LoginResponse.builder()
+                    .message("user logged in successfully")
+                    .code(200)
+                    .build();
+        }
+        return LoginResponse.builder()
+                .message("Login failed, Bad credentials")
+                .code(200)
+                .build();
     }
 
     @Override
