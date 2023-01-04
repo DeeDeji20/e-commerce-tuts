@@ -19,4 +19,6 @@ public interface CustomerService {
     List<Customer> getAllCustomers();
 
     Optional<Customer> findById(Long id) throws UserNotFoundException;
+
+    String suspendCustomer(Long id) throws UserNotFoundException;
 }

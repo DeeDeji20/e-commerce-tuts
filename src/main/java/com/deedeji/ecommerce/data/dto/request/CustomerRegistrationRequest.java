@@ -25,7 +25,7 @@ public class CustomerRegistrationRequest {
     @NotEmpty(message = "Name cannot be empty")
     @NotNull(message = "Name cannot be null")
     private String firstName;
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Password field cannot be null")
+    @NotEmpty(message = "Password field cannot be empty")
     private String password;
 }

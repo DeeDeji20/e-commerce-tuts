@@ -77,9 +77,14 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getAllCustomers(){
+    void getAllCustomersTest(){
         var allCustomers = customerService.getAllCustomers();
         assertThat(allCustomers).isNotNull();
+    }
+
+    @Test
+    void getAllCustomerTestWhenThereAreNoCustomersThrowExceptionTest(){
+        customerService.getAllCustomers();
     }
 
     @Test
@@ -91,5 +96,10 @@ class CustomerServiceTest {
     @Test
     void getCustomerByInvalidId_throwsException() {
         assertThrows(UserNotFoundException.class, ()-> customerService.findById(10L));
+    }
+
+    @Test
+    void suspendCustomerTest(){
+        customerService.suspendCustomer(3L);
     }
 }

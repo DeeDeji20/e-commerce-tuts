@@ -114,6 +114,17 @@ public class CustomerServiceImpl implements CustomerService{
         return Optional.of(customer);
     }
 
+    @Override
+    public String suspendCustomer(Long id) throws UserNotFoundException {
+        Customer foundCustomer = customerRepository.findById(id).orElseThrow(
+                ()-> new UserNotFoundException(String.format(
+                        "User with the id %d not available", id)));
+
+        foundCustomer.setEnabled(false);
+        customerRepository.save(foundCustomer);
+        return  String.format("%s details updated suspended", foundCustomer.getFirstName());
+    }
+
     private void applyAddressUpdate(Address foundAddress, UpdateCustomerDetails details) {
         foundAddress.setCity(details.getCity());
         foundAddress.setBuildingNumber(details.getBuildingNumber());
