@@ -31,7 +31,7 @@ public class CustomerController {
         }
     }
 
-    @PatchMapping("/update")
+    @PatchMapping("/updateProfile")
     public ResponseEntity<?> updateProfile(@RequestBody @Valid UpdateCustomerDetails request){
         try{
             return ResponseEntity.status(HttpStatus.OK)
@@ -55,6 +55,17 @@ public class CustomerController {
                     .body(customerService.findById(id));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/suspend/{id}")
+    public ResponseEntity<?> suspendCustomer(@PathVariable(value = "id") Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(customerService.suspendCustomer(id));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
     }

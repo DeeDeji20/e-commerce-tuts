@@ -122,7 +122,7 @@ public class CustomerServiceImpl implements CustomerService{
 
         foundCustomer.setEnabled(false);
         customerRepository.save(foundCustomer);
-        return  String.format("%s details updated suspended", foundCustomer.getFirstName());
+        return  String.format("%s details suspended successfully", foundCustomer.getFirstName());
     }
 
     private void applyAddressUpdate(Address foundAddress, UpdateCustomerDetails details) {
