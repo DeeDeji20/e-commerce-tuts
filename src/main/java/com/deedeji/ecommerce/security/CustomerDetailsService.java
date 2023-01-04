@@ -1,5 +1,6 @@
 package com.deedeji.ecommerce.security;
 
+import com.deedeji.ecommerce.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

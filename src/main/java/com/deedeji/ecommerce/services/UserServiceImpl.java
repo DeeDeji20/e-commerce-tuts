@@ -1,4 +1,4 @@
-package com.deedeji.ecommerce.security;
+package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.LoginRequest;
 import com.deedeji.ecommerce.data.dto.response.LoginResponse;
@@ -9,12 +9,13 @@ import com.deedeji.ecommerce.data.models.Vendor;
 import com.deedeji.ecommerce.data.repository.AdminRepository;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.data.repository.VendorRepository;
+import com.deedeji.ecommerce.services.UserService;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final CustomerRepository customerRepository;
 

@@ -1,4 +1,4 @@
-package com.deedeji.ecommerce.security.config.jwt;
+package com.deedeji.ecommerce.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -24,6 +24,15 @@ public class JwtUtil {
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Date.from(Instant.now().plusSeconds(3600)))
                 .withIssuer(issuer)
+                .sign(algorithm);
+    }
+
+    public String generateRefreshToken(UserDetails user) {
+        return JWT.create()
+                .withIssuer(issuer)
+                .withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plusSeconds(86400))
+                .withSubject(user.getUsername())
                 .sign(algorithm);
     }
 }

@@ -1,4 +1,4 @@
-package com.deedeji.ecommerce.security;
+package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.LoginRequest;
 import com.deedeji.ecommerce.data.dto.response.LoginResponse;
