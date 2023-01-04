@@ -27,7 +27,7 @@ class CustomerServiceTest {
     void setUp(){
         request = CustomerRegistrationRequest
                 .builder()
-                .email("yawoj39718@khaxan.com")
+                .email("test@gmail.com")
                 .password("password")
                 .country("Nigeria")
                 .build();

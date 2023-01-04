@@ -11,10 +11,12 @@ import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.data.repository.VendorRepository;
 import com.deedeji.ecommerce.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
 
     private final CustomerRepository customerRepository;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        System.out.println("Got here");
         Optional<Customer> customer = customerRepository.findByEmail(loginRequest.getEmail());
         if (customer.isPresent() && customer.get().getPassword()
                 .equals(loginRequest.getPassword())){
