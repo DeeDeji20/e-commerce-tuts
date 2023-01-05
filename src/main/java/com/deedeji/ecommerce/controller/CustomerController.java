@@ -31,8 +31,8 @@ public class CustomerController {
         }
     }
 
-    @PatchMapping("/updateProfile")
-    public ResponseEntity<?> updateProfile(@RequestBody @Valid UpdateCustomerDetails request){
+    @PutMapping("/updateProfile")
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateCustomerDetails request){
         try{
             return ResponseEntity.status(HttpStatus.OK)
                     .body(customerService.updateCustomerProfile(request));

@@ -2,6 +2,7 @@ package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
+import com.deedeji.ecommerce.data.dto.response.Awesome;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
 import com.deedeji.ecommerce.data.models.Customer;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
@@ -50,18 +51,11 @@ class CustomerServiceTest {
 
     @Test
     void updateProfileTest() throws EcommerceExpressException {
-        var request = CustomerRegistrationRequest
-                .builder()
-                .email("test2@gmail.com")
-                .password("password")
-                .country("Nigeria")
-                .build();
-        CustomerRegisterResponse customerRegistrationResponse=
-                customerService.register(request);
-        assertThat(customerRegistrationResponse).isNotNull();
+//        assertThat(customerRegistrationResponse).isNotNull();
         UpdateCustomerDetails details = UpdateCustomerDetails
                 .builder()
-                .customerId(customerRegistrationResponse.getUserId())
+                .customerId(3L)
+                .firstName("Dee")
                 .imageUrl(EcommerceUtils.getMockCloudinaryImageUrl())
                 .lastName("test LastName")
                 .city("test city")
@@ -99,7 +93,8 @@ class CustomerServiceTest {
     }
 
     @Test
-    void suspendCustomerTest(){
-        customerService.suspendCustomer(3L);
+    void suspendCustomerTest() throws UserNotFoundException {
+        String res = customerService.suspendCustomer(3L);
+        assertThat(res).isEqualTo("Dee's details suspended successfully");
     }
 }

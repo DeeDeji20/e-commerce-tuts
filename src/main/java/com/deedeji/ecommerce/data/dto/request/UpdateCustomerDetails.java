@@ -10,6 +10,7 @@ import lombok.*;
 public class UpdateCustomerDetails {
     private Long customerId;
     private String lastName;
+    private String firstName;
     private String phoneNumber;
     private String imageUrl;
     private int buildingNumber;

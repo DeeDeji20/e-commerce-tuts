@@ -3,6 +3,7 @@ package com.deedeji.ecommerce.services;
 import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
+import com.deedeji.ecommerce.data.dto.response.Awesome;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
 import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
@@ -122,7 +123,7 @@ public class CustomerServiceImpl implements CustomerService{
 
         foundCustomer.setEnabled(false);
         customerRepository.save(foundCustomer);
-        return  String.format("%s details suspended successfully", foundCustomer.getFirstName());
+        return  String.format("%s's details suspended successfully", foundCustomer.getFirstName());
     }
 
     private void applyAddressUpdate(Address foundAddress, UpdateCustomerDetails details) {
