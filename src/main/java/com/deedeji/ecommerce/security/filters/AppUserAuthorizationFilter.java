@@ -32,7 +32,7 @@ public class AppUserAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(AUTHORIZATION);
 
-        if (request.getServletPath().equals("/api/v1/customer/login")){
+        if (request.getServletPath().equals("/api/v1/login")){
             filterChain.doFilter(request, response);
         }else {
             if (authHeader != null && authHeader.startsWith("Bearer ")){
@@ -44,7 +44,9 @@ public class AppUserAuthorizationFilter extends OncePerRequestFilter {
                             .build();
 
                     DecodedJWT decodedJWT = verifier.verify(token);
+                    log.info("Decoded JWT {}",decodedJWT);
                     String subject = decodedJWT.getSubject();
+                    log.info("Subject::: {}", subject);
                     List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
 
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(subject,
@@ -56,6 +58,7 @@ public class AppUserAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     filterChain.doFilter(request, response);
                 }catch (Exception exception){
+                    log.info("Exception message {}", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     mapper.writeValue(response.getOutputStream(), exception.getMessage());
                 }

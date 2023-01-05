@@ -25,15 +25,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         UsernamePasswordAuthenticationFilter filter =
                 new AppUserAuthenticationFilter(customAuthenticationManager, jwtUtil);
-        filter.setFilterProcessesUrl("api/v1/customer/login");
+        filter.setFilterProcessesUrl("/api/v1/login");
 
         return http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/v1/customer/register", "api/v1/customer/login")
+                .antMatchers(HttpMethod.POST, "/api/v1/customer/register", "/api/v1/login")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/customer/all").hasAnyAuthority("BUY")
+                .antMatchers(HttpMethod.PUT, "/api/v1/customer").hasAnyAuthority("BUY")
                 .and()
                 .addFilter(filter)
                 .addFilterBefore(new AppUserAuthorizationFilter(), AppUserAuthenticationFilter.class)

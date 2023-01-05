@@ -2,9 +2,7 @@ package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
-import com.deedeji.ecommerce.data.dto.response.Awesome;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
-import com.deedeji.ecommerce.data.models.Customer;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.deedeji.ecommerce.util.EcommerceUtils;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest

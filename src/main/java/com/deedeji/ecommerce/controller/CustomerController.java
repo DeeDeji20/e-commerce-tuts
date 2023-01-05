@@ -31,7 +31,7 @@ public class CustomerController {
         }
     }
 
-    @PutMapping("/updateProfile")
+    @PutMapping()
     public ResponseEntity<?> updateProfile(@RequestBody UpdateCustomerDetails request){
         try{
             return ResponseEntity.status(HttpStatus.OK)
@@ -42,7 +42,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/getCustomers")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllCustomers(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerService.getAllCustomers());
@@ -59,6 +59,7 @@ public class CustomerController {
         }
     }
 
+//    TODO move this to admin service
     @PutMapping("/suspend/{id}")
     public ResponseEntity<?> suspendCustomer(@PathVariable(value = "id") Long id){
         try{

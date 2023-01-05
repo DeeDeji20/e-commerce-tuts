@@ -9,6 +9,7 @@ import com.deedeji.ecommerce.data.models.Vendor;
 import com.deedeji.ecommerce.data.repository.AdminRepository;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.data.repository.VendorRepository;
+import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.deedeji.ecommerce.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser getUserByUsername(String email) {
-        return null;
+    public AppUser getUserByUsername(String email) throws UserNotFoundException {
+        Optional<Customer> customer = customerRepository.findByEmail(email);
+        if (customer.isPresent()){
+            return customer.get();
+        }
+        Optional<Admin> admin = adminRepository.findByEmail(email);
+        if (admin.isPresent()){
+            return admin.get();
+        }
+        Optional<Vendor> vendor = vendorRepository.findByEmail(email);
+        if(vendor.isPresent()){
+            return vendor.get();
+        }
+        throw new UserNotFoundException("User does not exist");
     }
 }

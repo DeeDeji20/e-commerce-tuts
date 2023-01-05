@@ -3,20 +3,18 @@ package com.deedeji.ecommerce.services;
 import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
-import com.deedeji.ecommerce.data.dto.response.Awesome;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
+import com.deedeji.ecommerce.data.dto.response.UpdateResponse;
 import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -84,8 +82,9 @@ public class CustomerServiceImpl implements CustomerService{
         }
     }
 
+//    TODO update the response to an object
     @Override
-    public String updateCustomerProfile(UpdateCustomerDetails details) throws UserNotFoundException {
+    public UpdateResponse updateCustomerProfile(UpdateCustomerDetails details) throws UserNotFoundException {
         Customer customerToUpdate = customerRepository.findById(details.getCustomerId())
                 .orElseThrow(()-> new UserNotFoundException(
                         String.format("Customer with id %d, not found", details.getCustomerId())
@@ -99,7 +98,10 @@ public class CustomerServiceImpl implements CustomerService{
         customerToUpdate.getAddress().add(foundAddress.get());
         customerToUpdate.setEnabled(true);
         Customer updatedCustomer = customerRepository.save(customerToUpdate);
-        return String.format("%s details updated successfully", updatedCustomer.getFirstName());
+        return UpdateResponse.builder()
+                .code(200)
+                .message(String.format("%s detail was updated successfully", customerToUpdate.getFirstName()))
+                .build();
     }
 
     @Override
