@@ -5,6 +5,8 @@ import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.deedeji.ecommerce.services.CustomerService;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,10 @@ public class CustomerController {
         } catch (EcommerceExpressException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
+        } catch (MailjetSocketTimeoutException e) {
+            throw new RuntimeException(e);
+        } catch (MailjetException e) {
+            throw new RuntimeException(e);
         }
     }
 

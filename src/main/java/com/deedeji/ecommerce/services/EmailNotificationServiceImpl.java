@@ -2,8 +2,21 @@ package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 
+import com.mailgun.api.v3.MailgunMessagesApi;
+import com.mailgun.client.MailgunClient;
+import com.mailgun.model.message.Message;
+import com.mailgun.model.message.MessageResponse;
+import com.mailjet.client.ClientOptions;
+import com.mailjet.client.MailjetClient;
+import com.mailjet.client.MailjetRequest;
+import com.mailjet.client.MailjetResponse;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import com.mailjet.client.resource.Emailv31;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -60,6 +73,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
 //        }
     }
 
+
     @Override
     public String sendGmail(EmailNotificationRequest emailNotificationRequest) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -78,4 +92,48 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
         }
         return String.format("Email not sent to %s", emailNotificationRequest.getUserEmail());
     }
+
+    @Override
+    public String sendMailJetMessage(EmailNotificationRequest emailNotificationRequest) throws MailjetSocketTimeoutException, MailjetException {
+        MailjetClient client;
+        MailjetRequest request;
+        MailjetResponse response;
+
+        String apiKey = System.getenv("mj.api.key");
+        String apiSecret = System.getenv("mj.api.secret");
+
+        client = new MailjetClient(apiKey, apiSecret, new ClientOptions("v3.1"));
+        request = new MailjetRequest(Emailv31.resource)
+                .property(Emailv31.MESSAGES, new JSONArray()
+                        .put(new JSONObject()
+                                .put(Emailv31.Message.FROM, new JSONObject()
+                                        .put("Email", "deolaoladeji@gmail.com")
+                                        .put("Name", "Deji"))
+                                .put(Emailv31.Message.TO, new JSONArray()
+                                        .put(new JSONObject()
+                                                .put("Email", emailNotificationRequest.getUserEmail())
+                                                .put("Name", "Adeola")))
+                                .put(Emailv31.Message.SUBJECT, "Greetings from Mailjet.")
+                                .put(Emailv31.Message.TEXTPART, "My first Mailjet email")
+                                .put(Emailv31.Message.HTMLPART, "<h3>Dear passenger Dee, welcome to <a href='https://www.google.com/'>Mailjet</a>!</h3><br />")
+                                .put(Emailv31.Message.CUSTOMID, "AppGettingStartedTest")));
+        response = client.post(request);
+        System.out.println(response.getStatus());
+        System.out.println(response.getData());
+        return "Email sent successfully";
+    }
+
+//    public MessageResponse sendSimpleMessage() {
+//        MailgunMessagesApi mailgunMessagesApi = MailgunClient.config(API_KEY)
+//                .createApi(MailgunMessagesApi.class);
+//
+//        Message message = Message.builder()
+//                .from("Excited User <USER@YOURDOMAIN.COM>")
+//                .to("artemis@example.com")
+//                .subject("Hello")
+//                .text("Testing out some Mailgun awesomeness!")
+//                .build();
+//
+//        return mailgunMessagesApi.sendMessage(YOUR_DOMAIN_NAME, message);
+//    }
 }

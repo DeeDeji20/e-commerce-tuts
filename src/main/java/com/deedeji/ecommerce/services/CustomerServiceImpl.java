@@ -9,6 +9,8 @@ import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService{
     private final ModelMapper mapper = new ModelMapper();
 
     @Override
-    public CustomerRegisterResponse register(CustomerRegistrationRequest request) throws EcommerceExpressException {
+    public CustomerRegisterResponse register(CustomerRegistrationRequest request) throws EcommerceExpressException, MailjetSocketTimeoutException, MailjetException {
         Optional<Customer> foundCustomer = customerRepository.findByEmail(request.getEmail());
         if (foundCustomer.isPresent()) throw new EcommerceExpressException(
                 String.format("Email %s already exist", request.getEmail())
@@ -54,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService{
         VerificationToken verificationToken = verificationTokenService
                 .createToken(savedCustomer.getEmail());
 
-        var msg =emailNotificationService.sendGmail(buildEmailNotificationRequest(verificationToken, savedCustomer.getFirstName()));
+        var msg =emailNotificationService.sendMailJetMessage(buildEmailNotificationRequest(verificationToken, savedCustomer.getFirstName()));
         return registrationCustomerBuilder(savedCustomer);
     }
 
@@ -148,4 +150,6 @@ public class CustomerServiceImpl implements CustomerService{
         customerAddress.setCountry(request.getCountry());
         customer.getAddress().add(customerAddress);
     }
+
+//    Add item to cart
 }
