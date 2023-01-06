@@ -4,6 +4,7 @@ import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
+import com.deedeji.ecommerce.data.dto.response.SuspendUserResponse;
 import com.deedeji.ecommerce.data.dto.response.UpdateResponse;
 import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
@@ -84,7 +85,6 @@ public class CustomerServiceImpl implements CustomerService{
         }
     }
 
-//    TODO update the response to an object
     @Override
     public UpdateResponse updateCustomerProfile(UpdateCustomerDetails details) throws UserNotFoundException {
         Customer customerToUpdate = customerRepository.findById(details.getCustomerId())
@@ -117,17 +117,6 @@ public class CustomerServiceImpl implements CustomerService{
                 new UserNotFoundException(String.format(
                         "No customer with such Id %d ", id)));
         return Optional.of(customer);
-    }
-
-    @Override
-    public String suspendCustomer(Long id) throws UserNotFoundException {
-        Customer foundCustomer = customerRepository.findById(id).orElseThrow(
-                ()-> new UserNotFoundException(String.format(
-                        "User with the id %d not available", id)));
-
-        foundCustomer.setEnabled(false);
-        customerRepository.save(foundCustomer);
-        return  String.format("%s's details suspended successfully", foundCustomer.getFirstName());
     }
 
     private void applyAddressUpdate(Address foundAddress, UpdateCustomerDetails details) {

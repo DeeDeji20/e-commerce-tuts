@@ -30,9 +30,7 @@ public class CustomerController {
         } catch (EcommerceExpressException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
-        } catch (MailjetSocketTimeoutException e) {
-            throw new RuntimeException(e);
-        } catch (MailjetException e) {
+        } catch (MailjetSocketTimeoutException | MailjetException e) {
             throw new RuntimeException(e);
         }
     }
@@ -65,15 +63,4 @@ public class CustomerController {
         }
     }
 
-//    TODO move this to admin service
-    @PutMapping("/suspend/{id}")
-    public ResponseEntity<?> suspendCustomer(@PathVariable(value = "id") Long id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(customerService.suspendCustomer(id));
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
-    }
 }

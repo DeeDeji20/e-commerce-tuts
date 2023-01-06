@@ -92,9 +92,4 @@ class CustomerServiceTest {
         assertThrows(UserNotFoundException.class, ()-> customerService.findById(10L));
     }
 
-    @Test
-    void suspendCustomerTest() throws UserNotFoundException {
-        String res = customerService.suspendCustomer(3L);
-        assertThat(res).isEqualTo("Dee's details suspended successfully");
-    }
 }

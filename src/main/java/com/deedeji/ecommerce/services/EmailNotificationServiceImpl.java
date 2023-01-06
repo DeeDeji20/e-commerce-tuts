@@ -2,10 +2,6 @@ package com.deedeji.ecommerce.services;
 
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 
-import com.mailgun.api.v3.MailgunMessagesApi;
-import com.mailgun.client.MailgunClient;
-import com.mailgun.model.message.Message;
-import com.mailgun.model.message.MessageResponse;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
@@ -22,14 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import sendinblue.ApiClient;
-import sendinblue.ApiException;
-import sendinblue.Configuration;
-import sendinblue.auth.*;
-import sibApi.ContactsApi;
-import sibModel.CreateContact;
-import sibModel.CreateModel;
-import sibModel.CreateUpdateContactModel;
 
 import javax.mail.internet.MimeMessage;
 
