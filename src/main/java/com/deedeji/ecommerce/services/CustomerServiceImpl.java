@@ -66,8 +66,9 @@ public class CustomerServiceImpl implements CustomerService{
         var message = getEmailTemplate();
         String mail = null;
         if (message != null){
-            var verificationUrl = "";
+            var verificationUrl = verificationToken;
             mail = String.format(message, customerName, verificationUrl);
+            log.info("mailed url--> {}", verificationUrl);
             log.info("mailed url--> {}", verificationUrl);
         }
         return EmailNotificationRequest.builder()

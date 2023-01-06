@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,14 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
 //    private String apiKeyValue;
 
     private final JavaMailSender javaMailSender;
+
+//    @Value("mj.api.key")
+//    private final String apiKey;
+//
+//    @Value("mj.api.secret")
+//    private final String apiSecret;
+
+    private Environment env;
 
     @Override
     public void sendHtmlMail(EmailNotificationRequest emailNotificationRequest) {
@@ -87,8 +96,8 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
         MailjetRequest request;
         MailjetResponse response;
 
-        String apiKey = System.getenv("mj.api.key");
-        String apiSecret = System.getenv("mj.api.secret");
+        String apiKey = env.getProperty("mj.api.key");
+        String apiSecret = env.getProperty("mj.api.secret");        System.out.println(apiKey);
 
         client = new MailjetClient(apiKey, apiSecret, new ClientOptions("v3.1"));
         request = new MailjetRequest(Emailv31.resource)
