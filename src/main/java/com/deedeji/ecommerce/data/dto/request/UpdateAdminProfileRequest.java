@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 public class UpdateAdminProfileRequest {
-    private Long customerId;
+    private Long adminId;
     private String lastName;
     private String firstName;
     private String phoneNumber;

@@ -95,13 +95,23 @@ public class AdminServiceImpl implements AdminService{
 
 
     @Override
-    public UpdateAdminProfileResponse updateAdminProfile(UpdateAdminProfileRequest response) {
-        return null;
+    public UpdateAdminProfileResponse updateAdminProfile(UpdateAdminProfileRequest request) throws UserNotFoundException {
+        Admin adminToUpdate = adminRepository.findById(request.getAdminId())
+                .orElseThrow(()-> new UserNotFoundException(
+                        String.format("Admin with id %d, not found", request.getAdminId())
+                ));
+        mapper.map(request, adminToUpdate);
+        adminToUpdate.setEnabled(true);
+        Admin updatedAdmin = adminRepository.save(adminToUpdate);
+        return UpdateAdminProfileResponse.builder()
+                .code(200)
+                .message(String.format("%s detail was updated successfully", adminToUpdate.getFirstName()))
+                .build();
     }
 
     @Override
     public List<Admin> getAllAdmins() {
-        return null;
+        return adminRepository.findAll();
     }
 
     @Override

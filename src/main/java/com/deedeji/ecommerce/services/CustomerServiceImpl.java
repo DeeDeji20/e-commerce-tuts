@@ -4,7 +4,6 @@ import com.deedeji.ecommerce.data.dto.request.CustomerRegistrationRequest;
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateCustomerDetails;
 import com.deedeji.ecommerce.data.dto.response.CustomerRegisterResponse;
-import com.deedeji.ecommerce.data.dto.response.SuspendUserResponse;
 import com.deedeji.ecommerce.data.dto.response.UpdateResponse;
 import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
@@ -67,7 +66,8 @@ public class CustomerServiceImpl implements CustomerService{
         String mail = null;
         if (message != null){
             var verificationUrl = verificationToken;
-            mail = String.format(message, customerName, verificationUrl);
+//            TODO Write the email as you desire
+            mail = String.format("", message, customerName, verificationUrl);
             log.info("mailed url--> {}", verificationUrl);
             log.info("mailed url--> {}", verificationUrl);
         }

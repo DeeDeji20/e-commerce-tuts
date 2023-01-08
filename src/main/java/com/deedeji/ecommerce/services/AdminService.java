@@ -18,7 +18,7 @@ public interface AdminService {
 
     AdminRegisterResponse register(AdminRegisterRequest request) throws EcommerceExpressException, MailjetSocketTimeoutException, MailjetException;
 
-    UpdateAdminProfileResponse updateAdminProfile(UpdateAdminProfileRequest response);
+    UpdateAdminProfileResponse updateAdminProfile(UpdateAdminProfileRequest response) throws UserNotFoundException;
 
     List<Admin> getAllAdmins();
 

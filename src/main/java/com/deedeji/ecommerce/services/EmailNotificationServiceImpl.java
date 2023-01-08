@@ -97,7 +97,9 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
         MailjetResponse response;
 
         String apiKey = env.getProperty("mj.api.key");
-        String apiSecret = env.getProperty("mj.api.secret");        System.out.println(apiKey);
+        String apiSecret = env.getProperty("mj.api.secret");
+        log.info("Email content {}", emailNotificationRequest.getMailContent());
+
 
         client = new MailjetClient(apiKey, apiSecret, new ClientOptions("v3.1"));
         request = new MailjetRequest(Emailv31.resource)
@@ -112,7 +114,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
                                                 .put("Name", "Adeola")))
                                 .put(Emailv31.Message.SUBJECT, "Greetings from Mailjet.")
                                 .put(Emailv31.Message.TEXTPART, "My first Mailjet email")
-                                .put(Emailv31.Message.HTMLPART, "<h3>Dear passenger Dee, welcome to <a href='https://www.google.com/'>Mailjet</a>!</h3><br />")
+                                .put(Emailv31.Message.HTMLPART, "<h3>Dear Dee, welcome to <a href='${}'>your FAV STORE</a>!</h3><br />")
                                 .put(Emailv31.Message.CUSTOMID, "AppGettingStartedTest")));
         response = client.post(request);
         System.out.println(response.getStatus());
