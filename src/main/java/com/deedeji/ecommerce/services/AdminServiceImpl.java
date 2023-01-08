@@ -105,7 +105,7 @@ public class AdminServiceImpl implements AdminService{
         Admin updatedAdmin = adminRepository.save(adminToUpdate);
         return UpdateAdminProfileResponse.builder()
                 .code(200)
-                .message(String.format("%s detail was updated successfully", adminToUpdate.getFirstName()))
+                .message(String.format("%s detail was updated successfully", updatedAdmin.getFirstName()))
                 .build();
     }
 
