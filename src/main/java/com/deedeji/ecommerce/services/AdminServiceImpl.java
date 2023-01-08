@@ -115,8 +115,11 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public Optional<Admin> findById(Long id) {
-        return Optional.empty();
+    public Optional<Admin> findById(Long id) throws UserNotFoundException {
+        Admin admin = adminRepository.findById(id).orElseThrow(()->
+                        new UserNotFoundException(String.format(
+                                "No admin with Id::: %d ", id)));
+        return Optional.of(admin);
     }
 
     @Override

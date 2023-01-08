@@ -116,7 +116,7 @@ public class CustomerServiceImpl implements CustomerService{
     public Optional<Customer> findById(Long id) throws UserNotFoundException {
         Customer customer = customerRepository.findById(id).orElseThrow(()->
                 new UserNotFoundException(String.format(
-                        "No customer with such Id %d ", id)));
+                        "No customer with Id::: %d ", id)));
         return Optional.of(customer);
     }
 

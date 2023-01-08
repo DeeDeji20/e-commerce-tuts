@@ -22,7 +22,7 @@ public interface AdminService {
 
     List<Admin> getAllAdmins();
 
-    Optional<Admin> findById(Long id);
+    Optional<Admin> findById(Long id) throws UserNotFoundException;
 
     SuspendUserResponse suspendCustomer(Long id) throws UserNotFoundException;
 }
