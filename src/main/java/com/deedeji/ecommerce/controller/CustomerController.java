@@ -41,7 +41,7 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(customerService.updateCustomerProfile(request));
         } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
     }
