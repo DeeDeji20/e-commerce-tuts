@@ -2,7 +2,6 @@ package com.deedeji.ecommerce.controller;
 
 import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.deedeji.ecommerce.services.AdminService;
-import com.deedeji.ecommerce.services.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,11 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PutMapping("/suspendCustomer/{id}")
-    public ResponseEntity<?> suspendCustomer(@PathVariable(value = "id") Long id){
+    @PutMapping("/suspendCustomer/{email}")
+    public ResponseEntity<?> suspendCustomer(@PathVariable(value = "email") String email){
         try{
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(adminService.suspendCustomer(id));
+                    .body(adminService.suspendUser(email));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());

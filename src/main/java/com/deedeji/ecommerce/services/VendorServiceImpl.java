@@ -3,8 +3,6 @@ package com.deedeji.ecommerce.services;
 import com.deedeji.ecommerce.data.dto.request.EmailNotificationRequest;
 import com.deedeji.ecommerce.data.dto.request.UpdateVendorProfileRequest;
 import com.deedeji.ecommerce.data.dto.request.VendorRegisterRequest;
-import com.deedeji.ecommerce.data.dto.response.AdminRegisterResponse;
-import com.deedeji.ecommerce.data.dto.response.UpdateAdminProfileResponse;
 import com.deedeji.ecommerce.data.dto.response.UpdateVendorProfileResponse;
 import com.deedeji.ecommerce.data.dto.response.VendorRegisterResponse;
 import com.deedeji.ecommerce.data.models.Address;
@@ -109,11 +107,14 @@ public class VendorServiceImpl implements VendorService{
 
     @Override
     public List<Vendor> getAllVendors() {
-        return null;
+        return vendorRepository.findAll();
     }
 
     @Override
-    public Optional<Vendor> findById(Long id) {
-        return Optional.empty();
+    public Vendor findById(Long id) throws UserNotFoundException {
+        return vendorRepository.findById(id).orElseThrow(
+                ()->
+                        new UserNotFoundException(String.format(
+                                "No admin with Id::: %d ", id)));
     }
 }

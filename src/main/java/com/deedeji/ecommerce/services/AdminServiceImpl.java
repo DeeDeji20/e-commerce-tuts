@@ -9,6 +9,7 @@ import com.deedeji.ecommerce.data.dto.response.UpdateAdminProfileResponse;
 import com.deedeji.ecommerce.data.models.*;
 import com.deedeji.ecommerce.data.repository.AdminRepository;
 import com.deedeji.ecommerce.data.repository.CustomerRepository;
+import com.deedeji.ecommerce.data.repository.VendorRepository;
 import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.mailjet.client.errors.MailjetException;
@@ -41,6 +42,9 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     EmailNotificationService emailNotificationService;
+
+    @Autowired
+    VendorRepository vendorRepository;
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -115,24 +119,37 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public Optional<Admin> findById(Long id) throws UserNotFoundException {
-        Admin admin = adminRepository.findById(id).orElseThrow(()->
+    public Admin findById(Long id) throws UserNotFoundException {
+        return adminRepository.findById(id).orElseThrow(()->
                         new UserNotFoundException(String.format(
                                 "No admin with Id::: %d ", id)));
-        return Optional.of(admin);
     }
 
     @Override
-    public SuspendUserResponse suspendCustomer(Long id) throws UserNotFoundException {
-        Customer foundCustomer = customerRepository.findById(id).orElseThrow(
-                ()-> new UserNotFoundException(String.format(
-                        "User with the id %d not available", id)));
+    public SuspendUserResponse suspendUser(String email) throws UserNotFoundException {
+        Optional<Customer> foundCustomer = customerRepository.findByEmail(email);
+        if (foundCustomer.isPresent()){
+            foundCustomer.get().setEnabled(false);
+            customerRepository.save(foundCustomer.get());
+            return buildSuspendResponse(foundCustomer.get().getFirstName());
+        }
 
-        foundCustomer.setEnabled(false);
-        customerRepository.save(foundCustomer);
+        Optional<Vendor> foundVendor = vendorRepository.findByEmail(email);
+        if (foundVendor.isPresent()){
+            foundVendor.get().setEnabled(false);
+            vendorRepository.save(foundVendor.get());
+            return buildSuspendResponse(foundVendor.get().getFirstName());
+        }
+
+        throw new UserNotFoundException(String.format(
+                        "User with the id %s not available", email));
+    }
+
+    private SuspendUserResponse buildSuspendResponse(String firstName) {
         return SuspendUserResponse.builder()
                 .code(200)
-                .message(String.format("%s's details suspended successfully", foundCustomer.getFirstName()))
+                .message(String.format("%s's details suspended successfully",
+                        firstName))
                 .build();
     }
 

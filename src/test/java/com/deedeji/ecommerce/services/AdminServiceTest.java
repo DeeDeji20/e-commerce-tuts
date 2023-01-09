@@ -16,7 +16,7 @@ public class AdminServiceTest {
 
     @Test
     void suspendCustomerTest() throws UserNotFoundException {
-        SuspendUserResponse res = adminService.suspendCustomer(3L);
+        SuspendUserResponse res = adminService.suspendUser("deolaoladeji@gmail.com");
         assertThat(res).isNotNull();
         assertThat(res.getCode()).isEqualTo(200);
     }

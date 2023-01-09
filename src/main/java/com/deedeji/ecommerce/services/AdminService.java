@@ -12,7 +12,6 @@ import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AdminService {
 
@@ -22,7 +21,7 @@ public interface AdminService {
 
     List<Admin> getAllAdmins();
 
-    Optional<Admin> findById(Long id) throws UserNotFoundException;
+    Admin findById(Long id) throws UserNotFoundException;
 
-    SuspendUserResponse suspendCustomer(Long id) throws UserNotFoundException;
+    SuspendUserResponse suspendUser(String email) throws UserNotFoundException;
 }
