@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(("/api/v1/admin"))
+@RequestMapping("/api/v1/admin")
 @AllArgsConstructor
 public class AdminController {
 
