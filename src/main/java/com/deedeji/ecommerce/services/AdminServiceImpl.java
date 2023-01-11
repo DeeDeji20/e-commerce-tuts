@@ -58,7 +58,7 @@ public class AdminServiceImpl implements AdminService{
         Admin admin = mapper.map(request, Admin.class);
         admin.getAuthorities().add(Authority.MODERATE);
         Admin savedAdmin = adminRepository.save(admin);
-        log.info("Admin saved in db::{}", savedAdmin);
+        log.info("Admin saved in db::{}", savedAdmin.toString());
         VerificationToken verificationToken = verificationTokenService
                 .createToken(savedAdmin.getEmail());
 

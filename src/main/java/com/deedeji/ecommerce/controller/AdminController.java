@@ -63,7 +63,7 @@ public class AdminController {
     }
 
 
-    @PutMapping("/suspendCustomer/{email}")
+    @PutMapping("/suspendUser/{email}")
     public ResponseEntity<?> suspendCustomer(@PathVariable(value = "email") String email){
         try{
             return ResponseEntity.status(HttpStatus.OK)

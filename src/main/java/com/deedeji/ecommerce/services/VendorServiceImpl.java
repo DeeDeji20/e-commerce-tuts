@@ -41,7 +41,7 @@ public class VendorServiceImpl implements VendorService{
     @Autowired
     EmailNotificationService emailNotificationService;
 
-    private ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper = new ModelMapper();
     @Override
     public VendorRegisterResponse register(VendorRegisterRequest request) throws EcommerceExpressException, MailjetSocketTimeoutException, MailjetException {
         Optional<Vendor> foundVendor = vendorRepository.findByEmail(request.getEmail());
