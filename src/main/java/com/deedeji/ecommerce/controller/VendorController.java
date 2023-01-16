@@ -7,15 +7,17 @@ import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.deedeji.ecommerce.services.VendorService;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1/vendor")
 @AllArgsConstructor
 public class VendorController {
 
@@ -29,6 +31,8 @@ public class VendorController {
         } catch (MailjetSocketTimeoutException | MailjetException | EcommerceExpressException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
+        } catch (TemplateException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

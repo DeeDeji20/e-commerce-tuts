@@ -14,18 +14,20 @@ import com.deedeji.ecommerce.exception.EcommerceExpressException;
 import com.deedeji.ecommerce.exception.UserNotFoundException;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -41,9 +43,11 @@ public class VendorServiceImpl implements VendorService{
     @Autowired
     EmailNotificationService emailNotificationService;
 
+    private Configuration configuration;
+
     private final ModelMapper mapper = new ModelMapper();
     @Override
-    public VendorRegisterResponse register(VendorRegisterRequest request) throws EcommerceExpressException, MailjetSocketTimeoutException, MailjetException {
+    public VendorRegisterResponse register(VendorRegisterRequest request) throws EcommerceExpressException, MailjetSocketTimeoutException, MailjetException, TemplateException, IOException {
         Optional<Vendor> foundVendor = vendorRepository.findByEmail(request.getEmail());
         if (foundVendor.isPresent()){
             throw new EcommerceExpressException(
@@ -60,16 +64,12 @@ public class VendorServiceImpl implements VendorService{
         VerificationToken verificationToken =
                 verificationTokenService.createToken(savedVendor.getEmail());
 
-        var message = getEmailTemplate();
-        String mail = null;
-        if (message != null){
-            var verificationUrl = verificationToken;
-            mail = String.format(message, savedVendor.getFirstName(), verificationUrl);
-            log.info("mailed url--> {}", verificationUrl);
-        }
+        String content = getEmailTemplate(verificationToken);
+        log.info("mailed url--> {}", verificationToken);
+
         EmailNotificationRequest e = EmailNotificationRequest.builder()
                 .userEmail(verificationToken.getUserEmail())
-                .mailContent(mail)
+                .mailContent(content)
                 .build();
         emailNotificationService.sendMailJetMessage(e);
         return VendorRegisterResponse.builder()
@@ -79,13 +79,20 @@ public class VendorServiceImpl implements VendorService{
                 .build();
     }
 
-    private String getEmailTemplate() {
-        try(BufferedReader bufferedReader=
-                    new BufferedReader(new FileReader("C:\\Users\\CROWN_STAFF.DESKTOP-R8GJQ3F\\IdeaProjects\\e-commerce\\src\\main\\resources\\welcome.txt"))){
-            return bufferedReader.lines().collect(Collectors.joining());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private String getEmailTemplate(VerificationToken verificationToken) throws IOException, TemplateException {
+//        try(BufferedReader bufferedReader=
+//                    new BufferedReader(new FileReader("C:\\Users\\CROWN_STAFF.DESKTOP-R8GJQ3F\\IdeaProjects\\e-commerce\\src\\main\\resources\\welcome.txt"))){
+//            return bufferedReader.lines().collect(Collectors.joining());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        Map<String, Object> m = new HashMap<>();
+        m.put("token", verificationToken.getToken());
+
+//        String template = "welcomeMessage.ftlh";
+        StringWriter stringWriter = new StringWriter();
+        configuration.getTemplate("welcomeMessage.ftlh").process(m, stringWriter);
+        return stringWriter.getBuffer().toString();
     }
 
     @Override
